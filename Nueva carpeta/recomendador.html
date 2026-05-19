@@ -256,45 +256,114 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 24px;
+      padding: 20px 36px 28px;
       border-top: 1px solid var(--border);
       margin-top: 8px;
     }
     .config-nav-left { display: flex; gap: 12px; }
     .btn-config-back {
-      background: transparent;
-      border: 1px solid var(--border);
+      background: var(--dark-3);
+      border: 1.5px solid rgba(255,255,255,0.15);
       border-radius: var(--radius-sm);
-      padding: 12px 24px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      padding: 13px 28px;
+      color: var(--text);
+      font-size: 0.93rem;
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
-    .btn-config-back:hover { color: var(--white); border-color: var(--white); }
+    .btn-config-back:hover { background: var(--dark-2); color: var(--white); border-color: rgba(255,255,255,0.35); }
     .btn-config-next {
       background: linear-gradient(135deg, var(--primary), #0056e0);
       border: none;
       border-radius: var(--radius-sm);
-      padding: 13px 32px;
+      padding: 14px 36px;
       color: var(--white);
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       font-family: inherit;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 16px rgba(0,102,255,0.28);
     }
     .btn-config-next:hover {
       background: linear-gradient(135deg, #0056e0, #0040b0);
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0,102,255,0.35);
+      box-shadow: 0 10px 30px rgba(0,102,255,0.4);
     }
-    .btn-config-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-config-next:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* ── NEGOCIO PANEL (persistent, below config box) ── */
+    .negocio-panel {
+      max-width: 820px;
+      margin: 20px auto 0;
+      background: var(--dark-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 36px 32px;
+      position: relative;
+    }
+    .negocio-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent);
+    }
+    .negocio-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .negocio-panel-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+    .negocio-panel-selected {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 20px;
+      padding: 3px 12px;
+    }
+    .negocio-panel p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* ── RESULT CTA BUTTONS ── */
+    .btn-wa-green {
+      background: #25d366;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 14px 28px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.93rem;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-wa-green:hover { background: #1da851; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.35); }
 
     /* ── RESULT ── */
     #stepResult { display: none; }
@@ -505,70 +574,13 @@
           <div class="config-progress-step" data-idx="1"></div>
           <div class="config-progress-step" data-idx="2"></div>
           <div class="config-progress-step" data-idx="3"></div>
-          <div class="config-progress-step" data-idx="4"></div>
         </div>
-        <div class="config-step-label">Paso <span id="currentStepNum">1</span> de 5</div>
+        <div class="config-step-label">Paso <span id="currentStepNum">1</span> de 4</div>
 
         <div class="config-steps" id="configSteps">
 
-          <!-- STEP 1: Tipo de negocio -->
+          <!-- STEP 1: Tipo de color -->
           <div class="config-step active" id="step1">
-            <h2>¿Para qué tipo de negocio?</h2>
-            <p>Selecciona la categoría que mejor describa tu negocio. Esto nos ayuda a filtrar los letreros más adecuados.</p>
-            <div class="config-options" id="opts-negocio">
-              <div class="config-opt" data-val="farmacia">
-                <span class="opt-icon">💊</span>
-                <span class="opt-label">Farmacia / Veterinaria</span>
-              </div>
-              <div class="config-opt" data-val="bar">
-                <span class="opt-icon">🍺</span>
-                <span class="opt-label">Bar / Restaurante / Cafetería</span>
-              </div>
-              <div class="config-opt" data-val="parking">
-                <span class="opt-icon">🅿️</span>
-                <span class="opt-label">Parking / Garage</span>
-              </div>
-              <div class="config-opt" data-val="clinica">
-                <span class="opt-icon">🏥</span>
-                <span class="opt-label">Clínica / Dental / Médico</span>
-              </div>
-              <div class="config-opt" data-val="hotel">
-                <span class="opt-icon">🏨</span>
-                <span class="opt-label">Hotel / Hostal</span>
-              </div>
-              <div class="config-opt" data-val="academia">
-                <span class="opt-icon">🎓</span>
-                <span class="opt-label">Academia / Autoescuela</span>
-              </div>
-              <div class="config-opt" data-val="gasolinera">
-                <span class="opt-icon">⛽</span>
-                <span class="opt-label">Gasolinera / Servicio</span>
-              </div>
-              <div class="config-opt" data-val="discoteca">
-                <span class="opt-icon">🎵</span>
-                <span class="opt-label">Discoteca / Pub</span>
-              </div>
-              <div class="config-opt" data-val="estanco">
-                <span class="opt-icon">🚬</span>
-                <span class="opt-label">Estanco / Lotería</span>
-              </div>
-              <div class="config-opt" data-val="comercio">
-                <span class="opt-icon">🛍️</span>
-                <span class="opt-label">Comercio / Tienda general</span>
-              </div>
-              <div class="config-opt" data-val="deporte">
-                <span class="opt-icon">🏆</span>
-                <span class="opt-label">Deportivo / Polideportivo</span>
-              </div>
-              <div class="config-opt" data-val="acceso">
-                <span class="opt-icon">🚦</span>
-                <span class="opt-label">Control de acceso / Aforo</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 2: Tipo de color -->
-          <div class="config-step" id="step2">
             <h2>¿Qué tipo de color necesitas?</h2>
             <p>El tipo de color afecta tanto el precio como la resolución visual del letrero.</p>
             <div class="config-options" id="opts-color">
@@ -590,10 +602,10 @@
             </div>
           </div>
 
-          <!-- STEP 3: Pixel Pitch -->
-          <div class="config-step" id="step3">
+          <!-- STEP 2: Pixel Pitch -->
+          <div class="config-step" id="step2">
             <h2>¿Qué pixel pitch prefieres?</h2>
-            <p>El <strong>pixel pitch</strong> determina la resolución: cuanto menor es el número, más nítida es la imagen y se puede ver bien de más cerca. A mayor número, más económico y para ver de lejos.</p>
+            <p>El <strong>pixel pitch</strong> determina la resolución: cuanto menor es el número, más nítida es la imagen. A mayor número, más económico y para ver de lejos.</p>
             <div class="config-info-box" id="pitchInfoBox">
               Selecciona el tipo de color primero para ver las opciones disponibles.
             </div>
@@ -616,15 +628,15 @@
               <div class="config-opt" data-val="P2.5">
                 <span class="opt-icon">🏟️</span>
                 <span class="opt-label">P2.5</span>
-                <span class="opt-sub">Alta resolución para visualización de cerca. Ideal para interiores donde el cliente está muy próximo al letrero.</span>
+                <span class="opt-sub">Máxima resolución para interiores donde el cliente está muy próximo.</span>
               </div>
             </div>
           </div>
 
-          <!-- STEP 4: Exterior / Interior -->
-          <div class="config-step" id="step4">
+          <!-- STEP 3: Exterior / Interior -->
+          <div class="config-step" id="step3">
             <h2>¿Dónde se instalará el letrero?</h2>
-            <p>Elige si el letrero irá en el exterior (fachada, escaparate exterior) o en el interior del local.</p>
+            <p>Elige si el letrero irá en el exterior (fachada, escaparate) o en el interior del local.</p>
             <div class="config-info-box" id="ubicacionInfo">
               La instalación exterior requiere protección IP65 contra lluvia y polvo.
             </div>
@@ -632,22 +644,22 @@
               <div class="config-opt" data-val="exterior">
                 <span class="opt-icon">🌧️</span>
                 <span class="opt-label">Exterior</span>
-                <span class="opt-sub">Fachada, escaparate o zona expuesta al exterior. Protección IP65.</span>
+                <span class="opt-sub">Fachada, escaparate o zona expuesta. Protección IP65.</span>
               </div>
               <div class="config-opt" data-val="interior">
                 <span class="opt-icon">🏬</span>
                 <span class="opt-label">Interior</span>
-                <span class="opt-sub">Dentro del local, frente de mostrador o espacio interior.</span>
+                <span class="opt-sub">Dentro del local, mostrador o espacio interior.</span>
               </div>
             </div>
           </div>
 
-          <!-- STEP 5: Tamaño -->
-          <div class="config-step" id="step5">
+          <!-- STEP 4: Tamaño -->
+          <div class="config-step" id="step4">
             <h2>¿Qué tamaño necesitas?</h2>
-            <p>Introduce las dimensiones deseadas en centímetros. Las medidas deben ser múltiplos del tamaño de placa del pixel pitch elegido.</p>
+            <p>Selecciona las dimensiones disponibles para tu tipo de negocio.</p>
             <div class="config-info-box" id="sizeRuleInfo">
-              <!-- filled by JS -->
+              Las opciones disponibles se filtran según el tipo de negocio seleccionado.
             </div>
             <div class="size-inputs">
               <div class="size-field">
@@ -664,11 +676,14 @@
                 <label for="selectAlto">Alto</label>
                 <div class="size-input-wrap">
                   <select id="selectAlto">
-                    <option value="">Selecciona alto…</option>
+                    <option value="">Primero selecciona ancho…</option>
                   </select>
                   <span class="size-unit">cm</span>
                 </div>
               </div>
+            </div>
+            <div class="size-hint">
+              <strong>Consejo:</strong> Las medidas se ajustan automáticamente según tu tipo de negocio.
             </div>
             <div class="size-error" id="sizeError">⚠️ Selecciona ancho y alto para continuar.</div>
           </div>
@@ -678,7 +693,10 @@
         <!-- Nav buttons -->
         <div class="config-nav" id="configNav">
           <div class="config-nav-left">
-            <button class="btn-config-back" id="btnBack" style="display:none">← Atrás</button>
+            <button class="btn-config-back" id="btnBack" style="display:none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="15 18 9 12 15 6"/></svg>
+              Atrás
+            </button>
           </div>
           <button class="btn-config-next" id="btnNext">
             Siguiente
@@ -706,11 +724,70 @@
           </div>
           <div class="result-cta-btns">
             <a href="produtos.html" class="btn btn-primary btn-large">Ver todos los productos</a>
-            <a href="https://wa.me/34652027910" class="btn btn-outline-white" target="_blank" rel="noopener">
+            <a href="https://wa.me/34652027910" class="btn-wa-green" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Pedir por WhatsApp
             </a>
             <button class="btn-restart" id="btnRestart">↺ Volver a configurar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEGOCIO PANEL (always visible) -->
+      <div class="negocio-panel" id="negocioPanel">
+        <div class="negocio-panel-header">
+          <span class="negocio-panel-title">Tipo de negocio</span>
+          <span class="negocio-panel-selected" id="negocioSelectedLabel">No seleccionado</span>
+        </div>
+        <p>Selecciona tu tipo de negocio para filtrar los productos y medidas más adecuados.</p>
+        <div class="config-options" id="opts-negocio">
+          <div class="config-opt" data-val="farmacia">
+            <span class="opt-icon">💊</span>
+            <span class="opt-label">Farmacia / Veterinaria</span>
+          </div>
+          <div class="config-opt" data-val="bar">
+            <span class="opt-icon">🍺</span>
+            <span class="opt-label">Bar / Restaurante / Cafetería</span>
+          </div>
+          <div class="config-opt" data-val="parking">
+            <span class="opt-icon">🅿️</span>
+            <span class="opt-label">Parking / Garage</span>
+          </div>
+          <div class="config-opt" data-val="clinica">
+            <span class="opt-icon">🏥</span>
+            <span class="opt-label">Clínica / Dental / Médico</span>
+          </div>
+          <div class="config-opt" data-val="hotel">
+            <span class="opt-icon">🏨</span>
+            <span class="opt-label">Hotel / Hostal</span>
+          </div>
+          <div class="config-opt" data-val="academia">
+            <span class="opt-icon">🎓</span>
+            <span class="opt-label">Academia / Autoescuela</span>
+          </div>
+          <div class="config-opt" data-val="gasolinera">
+            <span class="opt-icon">⛽</span>
+            <span class="opt-label">Gasolinera / Servicio</span>
+          </div>
+          <div class="config-opt" data-val="discoteca">
+            <span class="opt-icon">🎵</span>
+            <span class="opt-label">Discoteca / Pub</span>
+          </div>
+          <div class="config-opt" data-val="estanco">
+            <span class="opt-icon">🚬</span>
+            <span class="opt-label">Estanco / Lotería</span>
+          </div>
+          <div class="config-opt" data-val="comercio">
+            <span class="opt-icon">🛍️</span>
+            <span class="opt-label">Comercio / Tienda general</span>
+          </div>
+          <div class="config-opt" data-val="deporte">
+            <span class="opt-icon">🏆</span>
+            <span class="opt-label">Deportivo / Polideportivo</span>
+          </div>
+          <div class="config-opt" data-val="acceso">
+            <span class="opt-icon">🚦</span>
+            <span class="opt-label">Control de acceso / Aforo</span>
           </div>
         </div>
       </div>
@@ -733,54 +810,114 @@
 
   <script src="main.js"></script>
   <script>
-  // ═══════════════════════════════════════════════
-  //  CONFIGURADOR DE LETREROS LED
-  // ═══════════════════════════════════════════════
   (function() {
 
     // ── State ──
-    const state = {
-      negocio: null,
-      color: null,
-      pitch: null,
-      ubicacion: null,
-      ancho: null,
-      alto: null
-    };
-
+    const state = { negocio:null, color:null, pitch:null, ubicacion:null, ancho:null, alto:null };
     let currentStep = 1;
-    const TOTAL_STEPS = 5;
+    const TOTAL_STEPS = 4;
 
-    // ── Pitch rules ──
-    const pitchRules = {
-      P10:  { plateW: 32, plateH: 16, multiple: 16  },
-      P5:   { plateW: 32, plateH: 16, multiple: 16  },
-      'P2.5':  { plateW: 32, plateH: 16, multiple: 16  },
-      P6:   { plateW: 19.2, plateH: 19.2, multiple: 19.2 }
-    };
-    const MAX_W = 200, MAX_H = 100; // cm
-
-    // ── Color → available pitches ──
+    // ── Data ──
     const colorPitchMap = {
-      monocolor: ['P10', 'P6'],
+      monocolor: ['P10'],
       rgb:       ['P10', 'P6', 'P5', 'P2.5'],
       fullcolor: ['P10', 'P6', 'P5', 'P2.5']
     };
-
-    // ── Pitches with interior/exterior option ──
     const pitchHasUbicacion = ['P5', 'P2.5'];
 
+    // Sizes per business type — derived from actual product sizePrices in products-data.js
+    const businessSizes = {
+      parking:    { widths:[32,64,96],        heights:{ 32:[32,48], 64:[32,48,64,80,96], 96:[16,32] } },
+      farmacia:   { widths:[57,64,77,96],     heights:{ 57:[57], 64:[64], 77:[77], 96:[96] } },
+      gasolinera: { widths:[64,96,128,160],   heights:{ 64:[48,64], 96:[16,32,48,64], 128:[16,32,48], 160:[16,32,48] } },
+      academia:   { widths:[32,64,96],        heights:{ 32:[32,48], 64:[16,32,48,64,80,96], 96:[16,32] } },
+      clinica:    { widths:[32,64,96],        heights:{ 32:[32,48,64], 64:[32,48,64,80,96], 96:[16,32] } }
+    };
+    const defaultSizes = {
+      widths:  [32,64,96,128,160,192,224,256,288],
+      heights: { _all:[16,32,48,64,80,96] }
+    };
+
+    const negocioLabels = {
+      farmacia:'Farmacia / Veterinaria', bar:'Bar / Restaurante / Cafetería', parking:'Parking / Garage',
+      clinica:'Clínica / Dental / Médico', hotel:'Hotel / Hostal', academia:'Academia / Autoescuela',
+      gasolinera:'Gasolinera / Servicio', discoteca:'Discoteca / Pub', estanco:'Estanco / Lotería',
+      comercio:'Comercio / Tienda general', deporte:'Deportivo / Polideportivo', acceso:'Control de acceso / Aforo'
+    };
+    const colorLabels = { monocolor:'Monocolor', rgb:'RGB', fullcolor:'Full Color' };
+
+    const catalogMap = {
+      farmacia:[13,14,35], bar:[23,24], parking:[8,19,33,34], clinica:[17,18,22,36],
+      hotel:[25,26], academia:[16,21,9,20], gasolinera:[15], discoteca:[27,28],
+      estanco:[31,32], comercio:[1,4,5,10], deporte:[29,30], acceso:[33,34]
+    };
+    const productNames = {
+      1:{ name:'Letrero LED Programable en RGB, 1 Cara', icon:'▬' },
+      4:{ name:'Letrero LED Programable, 1 Cara', icon:'▬' },
+      5:{ name:'Letrero LED Programable, 2 Caras', icon:'▬' },
+      8:{ name:'Letrero LED Programable para Parking en RGB, 1 Cara', icon:'🅿️' },
+      9:{ name:'Letrero LED Programable para Autoescuelas en RGB, 1 Cara', icon:'🚗' },
+      10:{ name:'Letrero LED Programable en RGB, 2 Caras', icon:'▬' },
+      13:{ name:'Cruz LED Programable para Farmacias – Veterinarias – Clínicas, 2 Caras', icon:'✚' },
+      14:{ name:'Cruz LED Programable en RGB para Farmacias – Veterinarias', icon:'✚' },
+      15:{ name:'Letrero LED Programable para Gasolineras en RGB, 1 Cara', icon:'⛽' },
+      16:{ name:'Letrero LED Programable para Academias en RGB, 1 Cara', icon:'🎓' },
+      17:{ name:'Letrero LED Programable para Clínicas en RGB, 2 Caras', icon:'🏥' },
+      18:{ name:'Letrero LED Programable para Clínicas en RGB, 1 Cara', icon:'🏥' },
+      19:{ name:'Letrero LED Programable para Parking en RGB, 2 Caras', icon:'🅿️' },
+      20:{ name:'Letrero LED Programable para Autoescuelas en RGB, 2 Caras', icon:'🚗' },
+      21:{ name:'Letrero LED Programable para Academias en RGB, 2 Caras', icon:'🎓' },
+      22:{ name:'Letrero LED Programable para Clínicas Dentales en RGB, 2 Caras', icon:'🦷' },
+      23:{ name:'Letrero LED Programable para Bares/Restaurantes/Cafeterías en RGB, 1 Cara', icon:'🍺' },
+      24:{ name:'Letrero LED Programable para Bares/Restaurantes/Cafeterías en RGB, 2 Caras', icon:'🍺' },
+      25:{ name:'Letrero LED Programable para Hoteles en RGB, 1 Cara', icon:'🏨' },
+      26:{ name:'Letrero LED Programable para Hoteles en RGB, 2 Caras', icon:'🏨' },
+      27:{ name:'Letreros LED Programable para Discotecas/Pub en RGB, 1 Cara', icon:'🎵' },
+      28:{ name:'Letreros LED Programable para Discotecas/Pub en RGB, 2 Caras', icon:'🎵' },
+      29:{ name:'Letrero LED Programable Cronómetro Digital en RGB, 1 Cara', icon:'⏱' },
+      30:{ name:'Letrero LED Programable Cronómetro Digital, 2 Caras', icon:'⏱' },
+      31:{ name:'Letrero LED Programable para Estancos en RGB, 1 Cara', icon:'🚬' },
+      32:{ name:'Letrero LED Programable para Estancos en RGB, 2 Caras', icon:'🚬' },
+      33:{ name:'Letrero LED Programable para Control de Acceso RGB, 1 Cara', icon:'🚦' },
+      34:{ name:'Letrero LED Programable Control de Acceso Rojo-Verde, 1 Cara', icon:'🚦' },
+      35:{ name:'Cruz LED Programable RGB P6 para Farmacias – Veterinarias – Clínicas, 2 Caras', icon:'✚' },
+      36:{ name:'Letrero LED Programable para Clínicas en RGB, 1 Cara', icon:'🏥' }
+    };
+
     // ── DOM refs ──
-    const steps        = document.querySelectorAll('.config-step');
-    const progressBars = document.querySelectorAll('.config-progress-step');
-    const stepNumEl    = document.getElementById('currentStepNum');
-    const btnNext      = document.getElementById('btnNext');
-    const btnBack      = document.getElementById('btnBack');
-    const configBox    = document.querySelector('.config-box');
-    const resultBox    = document.getElementById('stepResult');
-    const btnRestart   = document.getElementById('btnRestart');
+    const steps          = document.querySelectorAll('.config-step');
+    const progressBars   = document.querySelectorAll('.config-progress-step');
+    const stepNumEl      = document.getElementById('currentStepNum');
+    const btnNext        = document.getElementById('btnNext');
+    const btnBack        = document.getElementById('btnBack');
+    const resultBox      = document.getElementById('stepResult');
+    const btnRestart     = document.getElementById('btnRestart');
+    const configNav      = document.getElementById('configNav');
+    const configProgress = document.getElementById('configProgress');
+    const stepLabel      = document.querySelector('.config-step-label');
+    const selectAncho    = document.getElementById('selectAncho');
+    const selectAlto     = document.getElementById('selectAlto');
+    const negocioLabelEl = document.getElementById('negocioSelectedLabel');
 
     // ── Helpers ──
+    function shouldSkipUbicacion() {
+      return state.pitch && !pitchHasUbicacion.includes(state.pitch);
+    }
+
+    function getSizeData() {
+      return businessSizes[state.negocio] || defaultSizes;
+    }
+
+    function getAvailableWidths() {
+      return getSizeData().widths;
+    }
+
+    function getAvailableHeights(ancho) {
+      const d = getSizeData();
+      return d.heights[ancho] || d.heights._all || [];
+    }
+
+    // ── Step display ──
     function showStep(n) {
       steps.forEach((s, i) => s.classList.toggle('active', i === n - 1));
       progressBars.forEach((b, i) => {
@@ -789,44 +926,37 @@
         else if (i === n - 1) b.classList.add('active');
       });
       stepNumEl.textContent = n;
-      btnBack.style.display  = n === 1 ? 'none' : 'block';
-      btnNext.textContent    = n === TOTAL_STEPS ? 'Ver mi letrero →' : 'Siguiente';
-      btnNext.innerHTML      = n === TOTAL_STEPS
+      btnBack.style.display = n === 1 ? 'none' : 'inline-flex';
+      btnNext.innerHTML = n === TOTAL_STEPS
         ? 'Ver mi letrero →'
         : 'Siguiente <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>';
       currentStep = n;
+      if (n === 4) populateSizeSelects();
     }
 
-    function getSelectedOpt(groupId) {
-      const sel = document.querySelector(`#${groupId} .config-opt.selected`);
-      return sel ? sel.dataset.val : null;
-    }
-
-    // ── Validate current step ──
+    // ── Validation ──
     function isStepValid() {
-      switch(currentStep) {
-        case 1: return !!state.negocio;
-        case 2: return !!state.color;
-        case 3: return !!state.pitch;
-        case 4: return !!state.ubicacion || !pitchHasUbicacion.includes(state.pitch);
-        case 5: return validateSizes();
+      switch (currentStep) {
+        case 1: return !!state.color;
+        case 2: return !!state.pitch;
+        case 3: return !!state.ubicacion;
+        case 4: return validateSizes();
       }
+      return false;
     }
 
     function validateSizes() {
-      const w = parseFloat(document.getElementById('selectAncho').value);
-      const h = parseFloat(document.getElementById('selectAlto').value);
-      const ok = w > 0 && h > 0;
+      const ok = !!state.ancho && !!state.alto;
       document.getElementById('sizeError').style.display = ok ? 'none' : 'block';
       return ok;
     }
 
-    // ── Update pitch availability based on color ──
+    // ── Pitch options ──
     function updatePitchOptions() {
       if (!state.color) return;
       const available = colorPitchMap[state.color] || [];
-      const box = document.getElementById('pitchInfoBox');
-      box.innerHTML = `Con <strong>${state.color}</strong>, los pitch disponibles son: <strong>${available.join(', ')}</strong>.`;
+      document.getElementById('pitchInfoBox').innerHTML =
+        `Con <strong>${state.color}</strong>, los pitch disponibles son: <strong>${available.join(', ')}</strong>.`;
       document.querySelectorAll('#opts-pitch .config-opt').forEach(opt => {
         const disabled = !available.includes(opt.dataset.val);
         opt.classList.toggle('disabled', disabled);
@@ -837,194 +967,109 @@
       });
     }
 
-    // ── Populate size dropdowns based on selected pitch ──
+    // ── Size dropdowns (cascading) ──
     function populateSizeSelects() {
-      const rule = pitchRules[state.pitch];
-      if (!rule) return;
-      const mult = rule.multiple;
-      const widths = [], heights = [];
-      for (let i = 1; i * mult <= MAX_W; i++) widths.push(Math.round(i * mult * 10) / 10);
-      for (let i = 1; i * mult <= MAX_H; i++) heights.push(Math.round(i * mult * 10) / 10);
-
-      const selAncho = document.getElementById('selectAncho');
-      const selAlto  = document.getElementById('selectAlto');
-      selAncho.innerHTML = '<option value="">Selecciona ancho…</option>' +
+      const widths = getAvailableWidths();
+      selectAncho.innerHTML = '<option value="">Selecciona ancho…</option>' +
         widths.map(w => `<option value="${w}">${w} cm</option>`).join('');
-      selAlto.innerHTML  = '<option value="">Selecciona alto…</option>' +
-        heights.map(h => `<option value="${h}">${h} cm</option>`).join('');
+      selectAlto.innerHTML = '<option value="">— Primero elige ancho —</option>';
       state.ancho = null;
       state.alto  = null;
     }
 
-    // ── Update size rules info ──
-    function updateSizeInfo() {
-      const rule = pitchRules[state.pitch];
-      if (!rule) return;
-      document.getElementById('sizeRuleInfo').innerHTML =
-        `Con <strong>${state.pitch}</strong>: placas de <strong>${rule.plateW} × ${rule.plateH} cm</strong>. Elige entre las medidas disponibles a continuación.`;
-      populateSizeSelects();
+    function updateHeightSelect() {
+      const ancho = parseInt(selectAncho.value);
+      if (!ancho) {
+        selectAlto.innerHTML = '<option value="">— Primero elige ancho —</option>';
+        state.ancho = null;
+        state.alto  = null;
+        return;
+      }
+      const heights = getAvailableHeights(ancho);
+      selectAlto.innerHTML = '<option value="">Selecciona alto…</option>' +
+        heights.map(h => `<option value="${h}">${h} cm</option>`).join('');
+      state.ancho = ancho;
+      state.alto  = null;
+      validateSizes();
     }
 
-    // ── Update step 4 visibility based on pitch ──
-    function shouldSkipUbicacion() {
-      return !pitchHasUbicacion.includes(state.pitch);
-    }
-
-    // ── Opt-click handlers ──
-    function bindOpts(groupId, stateKey) {
+    // ── Option binding ──
+    function bindOpts(groupId, stateKey, onChange) {
       document.querySelectorAll(`#${groupId} .config-opt`).forEach(opt => {
         opt.addEventListener('click', () => {
           if (opt.classList.contains('disabled')) return;
           document.querySelectorAll(`#${groupId} .config-opt`).forEach(o => o.classList.remove('selected'));
           opt.classList.add('selected');
           state[stateKey] = opt.dataset.val;
-          btnNext.disabled = false;
-
-          // Side effects
-          if (stateKey === 'color') updatePitchOptions();
-          if (stateKey === 'pitch') updateSizeInfo();
+          if (onChange) onChange(opt.dataset.val);
         });
       });
     }
 
-    bindOpts('opts-negocio',  'negocio');
-    bindOpts('opts-color',    'color');
-    bindOpts('opts-pitch',    'pitch');
-    bindOpts('opts-ubicacion','ubicacion');
+    bindOpts('opts-color', 'color', () => updatePitchOptions());
+    bindOpts('opts-pitch', 'pitch');
+    bindOpts('opts-ubicacion', 'ubicacion');
 
-    // Size selects
-    document.getElementById('selectAncho').addEventListener('change', () => {
-      state.ancho = parseFloat(document.getElementById('selectAncho').value) || null;
-      validateSizes();
+    // Negocio panel — persistent, always visible
+    bindOpts('opts-negocio', 'negocio', (val) => {
+      negocioLabelEl.textContent = negocioLabels[val] || val;
+      if (currentStep === 4) populateSizeSelects();
     });
-    document.getElementById('selectAlto').addEventListener('change', () => {
-      state.alto = parseFloat(document.getElementById('selectAlto').value) || null;
+
+    selectAncho.addEventListener('change', updateHeightSelect);
+    selectAlto.addEventListener('change', () => {
+      state.alto = parseInt(selectAlto.value) || null;
       validateSizes();
     });
 
     // ── Navigation ──
     btnNext.addEventListener('click', () => {
-      if (!isStepValid()) {
-        return; // silent – buttons show them what's selected
-      }
-      if (currentStep === TOTAL_STEPS) {
-        showResult();
-        return;
-      }
-
-      let nextStep = currentStep + 1;
-      // Skip step 4 (ubicacion) if pitch doesn't require it
-      if (nextStep === 4 && shouldSkipUbicacion()) {
-        // Auto-set ubicacion to exterior if not applicable
+      if (!isStepValid()) return;
+      if (currentStep === TOTAL_STEPS) { showResult(); return; }
+      let next = currentStep + 1;
+      if (next === 3 && shouldSkipUbicacion()) {
         state.ubicacion = 'exterior';
-        nextStep = 5;
+        next = 4;
       }
-      showStep(nextStep);
-      if (nextStep === 5) updateSizeInfo();
+      showStep(next);
     });
 
     btnBack.addEventListener('click', () => {
-      let prevStep = currentStep - 1;
-      // If we skipped step 4, go back to step 3 from step 5
-      if (currentStep === 5 && shouldSkipUbicacion()) {
-        prevStep = 3;
-      }
-      showStep(prevStep);
+      let prev = currentStep - 1;
+      if (currentStep === 4 && shouldSkipUbicacion()) prev = 2;
+      showStep(prev);
     });
 
-    // ── Product catalog map ──
-    // (negocio) → (product ids that match)
-    const catalogMap = {
-      farmacia:   [13, 14, 35],
-      bar:        [23, 24],
-      parking:    [8, 19, 33, 34],
-      clinica:    [17, 18, 22, 36],
-      hotel:      [25, 26],
-      academia:   [16, 21, 9, 20],
-      gasolinera: [15],
-      discoteca:  [27, 28],
-      estanco:    [31, 32],
-      comercio:   [1, 4, 5, 10],
-      deporte:    [29, 30],
-      acceso:     [33, 34]
-    };
+    // ── Build product URL with pre-selected size ──
+    function buildProductUrl(id) {
+      const size = `${state.ancho} cm de ancho x ${state.alto} cm de alto`;
+      return `produto-detalhe.html?id=${id}&size=${encodeURIComponent(size)}`;
+    }
 
-    const productNames = {
-      1:  { name:'Letrero LED Programable en RGB, 1 Cara', icon:'▬', cat:'letreros' },
-      4:  { name:'Letrero LED Programable, 1 Cara', icon:'▬', cat:'letreros' },
-      5:  { name:'Letrero LED Programable, 2 Caras', icon:'▬', cat:'letreros' },
-      8:  { name:'Letrero LED Programable para Parking en RGB, 1 Cara', icon:'🅿️', cat:'rotulos' },
-      9:  { name:'Letrero LED Programable para Autoescuelas en RGB, 1 Cara', icon:'🚗', cat:'rotulos' },
-      10: { name:'Letrero LED Programable en RGB, 2 Caras', icon:'▬', cat:'letreros' },
-      13: { name:'Cruz LED Programable para Farmacias – Veterinarias – Clínicas, 2 Caras', icon:'✚', cat:'cruces' },
-      14: { name:'Cruz LED Programable en RGB para Farmacias – Veterinarias', icon:'✚', cat:'cruces' },
-      15: { name:'Letrero LED Programable para Gasolineras en RGB, 1 Cara', icon:'⛽', cat:'rotulos' },
-      16: { name:'Letrero LED Programable para Academias en RGB, 1 Cara', icon:'🎓', cat:'rotulos' },
-      17: { name:'Letrero LED Programable para Clínicas en RGB, 2 Caras', icon:'🏥', cat:'rotulos' },
-      18: { name:'Letrero LED Programable para Clínicas en RGB, 1 Cara', icon:'🏥', cat:'rotulos' },
-      19: { name:'Letrero LED Programable para Parking en RGB, 2 Caras', icon:'🅿️', cat:'rotulos' },
-      20: { name:'Letrero LED Programable para Autoescuelas en RGB, 2 Caras', icon:'🚗', cat:'rotulos' },
-      21: { name:'Letrero LED Programable para Academias en RGB, 2 Caras', icon:'🎓', cat:'rotulos' },
-      22: { name:'Letrero LED Programable para Clínicas Dentales en RGB, 2 Caras', icon:'🦷', cat:'rotulos' },
-      23: { name:'Letrero LED Programable para Bares/Restaurantes/Cafeterías en RGB, 1 Cara', icon:'🍺', cat:'rotulos' },
-      24: { name:'Letrero LED Programable para Bares/Restaurantes/Cafeterías en RGB, 2 Caras', icon:'🍺', cat:'rotulos' },
-      25: { name:'Letrero LED Programable para Hoteles en RGB, 1 Cara', icon:'🏨', cat:'rotulos' },
-      26: { name:'Letrero LED Programable para Hoteles en RGB, 2 Caras', icon:'🏨', cat:'rotulos' },
-      27: { name:'Letreros LED Programable para Discotecas/Pub en RGB, 1 Cara', icon:'🎵', cat:'rotulos' },
-      28: { name:'Letreros LED Programable para Discotecas/Pub en RGB, 2 Caras', icon:'🎵', cat:'rotulos' },
-      29: { name:'Letrero LED Programable Cronómetro Digital en RGB, 1 Cara', icon:'⏱', cat:'marcadores' },
-      30: { name:'Letrero LED Programable Cronómetro Digital, 2 Caras', icon:'⏱', cat:'marcadores' },
-      31: { name:'Letrero LED Programable para Estancos en RGB, 1 Cara', icon:'🚬', cat:'rotulos' },
-      32: { name:'Letrero LED Programable para Estancos en RGB, 2 Caras', icon:'🚬', cat:'rotulos' },
-      33: { name:'Letrero LED Programable para Control de Acceso RGB, 1 Cara', icon:'🚦', cat:'accesorios' },
-      34: { name:'Letrero LED Programable Control de Acceso Rojo-Verde, 1 Cara', icon:'🚦', cat:'accesorios' },
-      35: { name:'Cruz LED Programable RGB P6 para Farmacias – Veterinarias – Clínicas, 2 Caras', icon:'✚', cat:'cruces' },
-      36: { name:'Letrero LED Programable para Clínicas en RGB, 1 Cara', icon:'🏥', cat:'rotulos' }
-    };
-
-    const negocioLabels = {
-      farmacia:'Farmacia / Veterinaria', bar:'Bar / Restaurante / Cafetería', parking:'Parking / Garage',
-      clinica:'Clínica / Dental / Médico', hotel:'Hotel / Hostal', academia:'Academia / Autoescuela',
-      gasolinera:'Gasolinera / Servicio', discoteca:'Discoteca / Pub', estanco:'Estanco / Lotería',
-      comercio:'Comercio / Tienda', deporte:'Deportivo / Polideportivo', acceso:'Control de acceso'
-    };
-    const colorLabels = { monocolor:'Monocolor', rgb:'RGB', fullcolor:'Full Color' };
-
+    // ── Show result ──
     function showResult() {
-      // hide configurator nav + progress
-      document.getElementById('configNav').style.display = 'none';
-      document.getElementById('configProgress').style.display = 'none';
-      document.querySelector('.config-step-label').style.display = 'none';
+      configNav.style.display      = 'none';
+      configProgress.style.display = 'none';
+      stepLabel.style.display      = 'none';
       steps.forEach(s => s.classList.remove('active'));
 
-      // Build summary
-      const specs = document.getElementById('resultSpecs');
-      specs.innerHTML = `
-        <div class="result-spec"><div class="result-spec-label">Negocio</div><div class="result-spec-val">${negocioLabels[state.negocio] || state.negocio}</div></div>
+      document.getElementById('resultSpecs').innerHTML = `
+        <div class="result-spec"><div class="result-spec-label">Negocio</div><div class="result-spec-val">${negocioLabels[state.negocio] || '—'}</div></div>
         <div class="result-spec"><div class="result-spec-label">Tipo de color</div><div class="result-spec-val">${colorLabels[state.color] || state.color}</div></div>
         <div class="result-spec"><div class="result-spec-label">Pixel Pitch</div><div class="result-spec-val">${state.pitch}</div></div>
         <div class="result-spec"><div class="result-spec-label">Ubicación</div><div class="result-spec-val">${state.ubicacion === 'exterior' ? '🌧️ Exterior' : '🏬 Interior'}</div></div>
         <div class="result-spec"><div class="result-spec-label">Tamaño</div><div class="result-spec-val">${state.ancho} × ${state.alto} cm</div></div>
       `;
 
-      // Find matching products
-      let matchIds = catalogMap[state.negocio] || [];
-
-      // Filter by color type
-      if (state.color === 'fullcolor') {
-        // Full color → pantallas only (or suggest all and highlight)
-        matchIds = matchIds.length ? matchIds : [1,2,3,4,5,6,7];
-      }
-
-      // Build list HTML
-      const listEl = document.getElementById('resultProductList');
+      const matchIds = catalogMap[state.negocio] || [];
+      const listEl   = document.getElementById('resultProductList');
       if (matchIds.length === 0) {
-        listEl.innerHTML = `<div class="no-match-box"><strong>No encontramos un match exacto</strong><p>Te recomendamos visitar el catálogo completo y filtrar según tus necesidades, o contáctanos por WhatsApp y te asesoramos en minutos.</p></div>`;
+        listEl.innerHTML = `<div class="no-match-box"><strong>No encontramos un match exacto</strong><p>Te recomendamos visitar el catálogo completo o contáctanos por WhatsApp.</p></div>`;
       } else {
-        listEl.innerHTML = matchIds.slice(0,4).map(id => {
+        listEl.innerHTML = matchIds.slice(0, 4).map(id => {
           const p = productNames[id];
           if (!p) return '';
-          return `<a href="produto-detalhe.html?id=${id}" class="result-product-card">
+          return `<a href="${buildProductUrl(id)}" class="result-product-card">
             <div class="result-product-card-icon">${p.icon}</div>
             <div class="result-product-info">
               <strong>${p.name}</strong>
@@ -1035,27 +1080,27 @@
         }).join('');
       }
 
-      // Show result box
       resultBox.style.display = 'block';
-      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      resultBox.scrollIntoView({ behavior:'smooth', block:'start' });
     }
 
-    // Restart
+    // ── Restart (keeps negocio selection) ──
     btnRestart.addEventListener('click', () => {
-      Object.assign(state, { negocio:null, color:null, pitch:null, ubicacion:null, ancho:null, alto:null });
-      document.querySelectorAll('.config-opt').forEach(o => o.classList.remove('selected'));
-      document.getElementById('inputAncho').value = '';
-      document.getElementById('inputAlto').value = '';
+      const savedNegocio = state.negocio;
+      Object.assign(state, { color:null, pitch:null, ubicacion:null, ancho:null, alto:null });
+      state.negocio = savedNegocio;
+      document.querySelectorAll('#opts-color .config-opt, #opts-pitch .config-opt, #opts-ubicacion .config-opt')
+        .forEach(o => o.classList.remove('selected'));
       document.getElementById('sizeError').style.display = 'none';
-      resultBox.style.display = 'none';
-      document.getElementById('configNav').style.display = 'flex';
-      document.getElementById('configProgress').style.display = 'flex';
-      document.querySelector('.config-step-label').style.display = 'block';
+      resultBox.style.display      = 'none';
+      configNav.style.display      = 'flex';
+      configProgress.style.display = 'flex';
+      stepLabel.style.display      = 'block';
       showStep(1);
-      window.scrollTo({ top: document.querySelector('.config-box').offsetTop - 120, behavior: 'smooth' });
+      window.scrollTo({ top: document.querySelector('.config-box').offsetTop - 120, behavior:'smooth' });
     });
 
-    // Init
+    // ── Init ──
     showStep(1);
 
   })();

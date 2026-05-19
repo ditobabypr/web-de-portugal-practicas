@@ -370,8 +370,10 @@
           showMsg('Email o contraseña incorrectos.');
         } else if (error.message.includes('Email not confirmed')) {
           showMsg('Confirma tu email antes de iniciar sesión. Revisa tu bandeja de entrada.');
+        } else if (error.message.toLowerCase().includes('socket') || error.message.toLowerCase().includes('fetch') || error.message.toLowerCase().includes('network') || error.message.toLowerCase().includes('failed')) {
+          showMsg('Error de conexión. Comprueba tu internet e inténtalo de nuevo.');
         } else {
-          showMsg(error.message);
+          showMsg('No se pudo iniciar sesión. Inténtalo de nuevo en unos momentos.');
         }
         return;
       }

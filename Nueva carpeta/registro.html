@@ -300,7 +300,11 @@
         }
 
       } catch (err) {
-        showMsg(err.message, true);
+        const msg = (err.message || '').toLowerCase();
+        const userMsg = (msg.includes('socket') || msg.includes('fetch') || msg.includes('network') || msg.includes('failed'))
+          ? 'Error de conexión. Comprueba tu internet e inténtalo de nuevo.'
+          : 'No se pudo crear la cuenta. Inténtalo de nuevo en unos momentos.';
+        showMsg(userMsg, true);
         btn.disabled    = false;
         btn.textContent = 'Crear cuenta gratuita';
       }

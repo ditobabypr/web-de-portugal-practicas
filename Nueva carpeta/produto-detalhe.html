@@ -1426,6 +1426,21 @@
 
       main.innerHTML = renderProduct(product);
 
+      // Auto-select size from configurator URL param (?size=64 cm de ancho x 48 cm de alto)
+      const sizeParam = params.get('size');
+      if (sizeParam) {
+        // Normalize: "32cm" → "32 cm", collapse whitespace
+        const normSize = s => s.trim().replace(/(\d)cm/gi, '$1 cm').replace(/\s+/g, ' ').toLowerCase();
+        const normalized = normSize(sizeParam);
+        const sizeSel = document.getElementById('opt_tamano');
+        if (sizeSel) {
+          Array.from(sizeSel.options).forEach(opt => {
+            if (normSize(opt.value) === normalized) sizeSel.value = opt.value;
+          });
+          sizeSel.dispatchEvent(new Event('change'));
+        }
+      }
+
       // Thumbnails logic
       document.querySelectorAll('.detalhe-thumb').forEach(thumb => {
         thumb.addEventListener('click', () => {
