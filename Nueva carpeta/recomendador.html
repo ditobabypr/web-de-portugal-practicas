@@ -1048,6 +1048,7 @@
 
     // ── Show result ──
     function showResult() {
+      sessionStorage.setItem('recomendador_state', JSON.stringify(state));
       configNav.style.display      = 'none';
       configProgress.style.display = 'none';
       stepLabel.style.display      = 'none';
@@ -1086,6 +1087,7 @@
 
     // ── Restart (keeps negocio selection) ──
     btnRestart.addEventListener('click', () => {
+      sessionStorage.removeItem('recomendador_state');
       const savedNegocio = state.negocio;
       Object.assign(state, { color:null, pitch:null, ubicacion:null, ancho:null, alto:null });
       state.negocio = savedNegocio;
@@ -1101,7 +1103,37 @@
     });
 
     // ── Init ──
-    showStep(1);
+    (function restoreOrStart() {
+      const saved = sessionStorage.getItem('recomendador_state');
+      if (saved) {
+        try {
+          const s = JSON.parse(saved);
+          Object.assign(state, s);
+          if (state.negocio) {
+            const el = document.querySelector(`#opts-negocio [data-val="${state.negocio}"]`);
+            if (el) { el.classList.add('selected'); negocioLabelEl.textContent = negocioLabels[state.negocio] || state.negocio; }
+          }
+          if (state.color) {
+            const el = document.querySelector(`#opts-color [data-val="${state.color}"]`);
+            if (el) el.classList.add('selected');
+            updatePitchOptions();
+          }
+          if (state.pitch) {
+            const el = document.querySelector(`#opts-pitch [data-val="${state.pitch}"]`);
+            if (el) el.classList.add('selected');
+          }
+          if (state.ubicacion) {
+            const el = document.querySelector(`#opts-ubicacion [data-val="${state.ubicacion}"]`);
+            if (el) el.classList.add('selected');
+          }
+          showResult();
+          return;
+        } catch(e) {
+          sessionStorage.removeItem('recomendador_state');
+        }
+      }
+      showStep(1);
+    })();
 
   })();
   </script>
