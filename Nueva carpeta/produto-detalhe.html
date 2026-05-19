@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-PT">
 
 <head>
@@ -659,6 +659,17 @@
       background: rgba(0, 102, 255, 0.15);
       color: var(--white);
       font-weight: 600;
+    }
+
+    .btn-surcharge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #4caf9a;
+      opacity: 0.9;
+    }
+
+    .detalhe-toggle-btn.active .btn-surcharge {
+      color: #6dd5bd;
     }
 
     .detalhe-select-wrap {
@@ -1322,7 +1333,7 @@
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
               </a>
-              <a href="https://wa.me/34627689699" class="social-link" aria-label="WhatsApp" target="_blank"
+              <a href="https://wa.me/34652027910" class="social-link" aria-label="WhatsApp" target="_blank"
                 rel="noopener">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path
@@ -1347,7 +1358,7 @@
   </footer>
 
   <!-- WhatsApp Float Button -->
-  <a href="https://wa.me/34627689699" class="whatsapp-float" aria-label="Contactar via WhatsApp" target="_blank"
+  <a href="https://wa.me/34652027910" class="whatsapp-float" aria-label="Contactar via WhatsApp" target="_blank"
     rel="noopener">
     <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
       <path
@@ -1376,6 +1387,13 @@
       try {
         product = await window.SupabaseProducts.getProductById(id);
         if (product) {
+          // Merge options from local PRODUCTS_DATA if Supabase returns them empty
+          if (!product.options || product.options.length === 0) {
+            const localProduct = window.PRODUCTS_DATA && window.PRODUCTS_DATA.find(function(p) { return p.id === id; });
+            if (localProduct && localProduct.options) {
+              product.options = localProduct.options;
+            }
+          }
           const sizePrices = await window.SupabaseProducts.getProductVariants(id);
           if (Object.keys(sizePrices).length > 0) {
             product.sizePrices = sizePrices;
@@ -1498,23 +1516,17 @@
           return;
         }
 
-        // Case 2: product 35 has hardcoded size prices
+        // Determine base price from size selection
         let total = defaultBasePrice;
         if (product.id === 35) {
           const sizeSel = document.getElementById('opt_tamano');
           if (sizeSel && sizeSel.value.includes('77 cm')) { total = 1713.36; } else { total = 726.00; }
-          const wifiBtn = document.querySelector('.detalhe-toggle-btn.active[data-option="programacion"]');
-          if (wifiBtn && wifiBtn.dataset.value.toLowerCase().includes('wifi')) total += 25;
         } else if (product.sizePrices) {
-          // Case 3: product-level sizePrices map
+          // Root-level sizePrices (injected from Supabase variants)
           const sizeSel = document.getElementById('opt_tamano');
           if (sizeSel && product.sizePrices[sizeSel.value] !== undefined) total = product.sizePrices[sizeSel.value];
-          const sondaBtn = document.querySelector('.detalhe-toggle-btn.active[data-option="sonda"]');
-          if (sondaBtn && sondaBtn.dataset.value === 'Sí') total += 25;
-          const wifiBtn = document.querySelector('.detalhe-toggle-btn.active[data-option="programacion"]');
-          if (wifiBtn && wifiBtn.dataset.value.toLowerCase().includes('wifi')) total += 25;
         } else if (product.options) {
-          // Case 4: sizePrices inside an option object + surcharges on toggle options
+          // sizePrices inside a tamano option
           const sizeOpt = product.options.find(o => o.sizePrices);
           if (sizeOpt) {
             const selectEl = document.getElementById(`opt_${sizeOpt.id}`);
@@ -1522,6 +1534,10 @@
               total = sizeOpt.sizePrices[selectEl.value];
             }
           }
+        }
+
+        // Apply surcharges from all toggle options (works for every case)
+        if (product.options && product.options.length > 0) {
           product.options.forEach(opt => {
             if (opt.surcharges) {
               const activeBtn = document.querySelector(`.detalhe-toggle-btn.active[data-option="${opt.id}"]`);
@@ -1530,7 +1546,7 @@
           });
         }
 
-        if (total === 0) return;
+        // Always update price display, even when total is 0
         const formatted = total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
         showPrice(total, formatted);
       }
