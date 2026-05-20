@@ -688,7 +688,7 @@
   <script>
     // ── Configuración ──────────────────────────────────────────────
     // URL del backend. En producción cambia esto por la URL de Railway/Render
-    const SERVER_URL = 'http://localhost:3000';
+    const SERVER_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
 
     // ── Estado del checkout ────────────────────────────────────────
     const state = {
