@@ -741,9 +741,13 @@ app.get('/test-email', async (req, res) => {
 // ── Arrancar servidor ────────────────────────────────────────────────
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
-  if (!process.env.STRIPE_SECRET_KEY)   console.warn('⚠️  STRIPE_SECRET_KEY no configurada');
-  if (!process.env.STRIPE_WEBHOOK_SECRET) console.warn('⚠️  STRIPE_WEBHOOK_SECRET no configurada');
-  if (!SUPABASE_SERVICE_KEY)            console.warn('⚠️  SUPABASE_SERVICE_KEY no configurada');
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+    if (!process.env.STRIPE_SECRET_KEY)   console.warn('⚠️  STRIPE_SECRET_KEY no configurada');
+    if (!process.env.STRIPE_WEBHOOK_SECRET) console.warn('⚠️  STRIPE_WEBHOOK_SECRET no configurada');
+    if (!SUPABASE_SERVICE_KEY)            console.warn('⚠️  SUPABASE_SERVICE_KEY no configurada');
+  });
+}
+
+module.exports = app;
