@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Empresa – Led Para Todos</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="Somos fabricantes y distribuidores de pantallas LED programables de alta calidad ubicados en Granada. Conoce nuestra empresa y nuestros productos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .emp-hero {
+      padding: 140px 0 80px;
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .emp-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(0,102,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .emp-hero h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .emp-hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 680px;
+      margin-bottom: 16px;
+    }
+    .emp-hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+
+    /* Section base */
+    .emp-section {
+      padding: 80px 0;
+    }
+    .emp-section--alt {
+      background: var(--dark-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .emp-section h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .emp-section p {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 14px;
+      max-width: 820px;
+    }
+
+    /* Capabilities grid */
+    .emp-caps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .emp-cap-card {
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .emp-cap-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: var(--transition);
+      transform-origin: left;
+    }
+    .emp-cap-card:hover { border-color: rgba(0,102,255,0.35); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .emp-cap-card:hover::before { transform: scaleX(1); }
+    .emp-cap-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,102,255,0.12);
+      border: 1px solid rgba(0,102,255,0.25);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent);
+      margin-bottom: 14px;
+      font-size: 1.3rem;
+    }
+    .emp-cap-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .emp-cap-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+    /* Programming modes */
+    .emp-prog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .emp-prog-card {
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .emp-prog-card--highlight { border-color: rgba(0,102,255,0.4); }
+    .emp-prog-card--highlight::after {
+      content: 'Opcional';
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(0,102,255,0.15);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,102,255,0.3);
+    }
+    .emp-prog-icon {
+      width: 52px; height: 52px;
+      background: rgba(0,102,255,0.1);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+    }
+    .emp-prog-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .emp-prog-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; margin: 0; }
+
+    /* Features list */
+    .emp-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+    }
+    .emp-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--dark-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      transition: var(--transition);
+    }
+    .emp-feature-item:hover { border-color: rgba(0,102,255,0.3); }
+    .emp-feature-check {
+      width: 22px; height: 22px;
+      min-width: 22px;
+      background: rgba(0,102,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .emp-feature-check svg { color: var(--accent); }
+    .emp-feature-item span { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* CTA */
+    .emp-cta {
+      padding: 80px 0;
+      background: var(--dark);
+      text-align: center;
+    }
+    .emp-cta h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .emp-cta p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .emp-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      .emp-prog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-svg">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" stroke="var(--text-muted)"/>
+            <ellipse cx="12" cy="12" rx="4" ry="10" stroke="var(--primary)"/>
+            <line x1="2" y1="12" x2="22" y2="12" stroke="var(--primary)"/>
+            <line x1="4" y1="7" x2="20" y2="7" stroke="var(--text-muted)"/>
+            <line x1="4" y1="17" x2="20" y2="17" stroke="var(--text-muted)"/>
+          </svg>
+        </div>
+        <div class="logo-stack">
+          <span>LEDS</span>
+          <span>PARATODOS</span>
+          <span>.COM</span>
+        </div>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="produtos.html">Productos</a></li>
+        <li><a href="como-funciona.html">Cómo Funciona</a></li>
+        <li><a href="sobre-nos.html">Sobre Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+      <a href="carrito.html" class="cart-nav-btn" id="cartNavBtn" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      <button class="nav-search-btn" id="navSearchBtn" aria-label="Buscar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <div class="nav-user-wrap" id="navUserWrap">
+        <button class="nav-user-btn" id="navUserBtn" aria-label="Mi cuenta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <div class="nav-user-dropdown" id="navUserDropdown">
+          <a href="login.html" class="nav-user-option nav-user-option--primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Iniciar Sesión
+          </a>
+          <div class="nav-user-divider"></div>
+          <a href="registro.html" class="nav-user-option">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Registrarse
+          </a>
+        </div>
+      </div>
+      <a href="contacto.html" class="btn btn-primary btn-small">Pedir Presupuesto</a>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="emp-hero">
+    <div class="container">
+      <span class="section-tag" style="margin-bottom:18px;display:inline-block;">La empresa</span>
+      <h1>Led Para Todos — <span class="accent-text">Fabricantes y distribuidores</span> de pantallas LED programables</h1>
+      <p>Somos fabricantes y distribuidores de pantallas LED programables de alta calidad y luminosidad. Nuestro objetivo es satisfacer las necesidades de nuestros clientes, y para ello tenemos los letreros LED perfectos para cada negocio.</p>
+      <p>Empresa de fabricación nacional ubicada en <strong style="color:var(--white)">Granada</strong>, distribuyendo pantallas LED por toda España y el resto de Europa.</p>
+      <div class="emp-hero-ctas">
+        <a href="produtos.html" class="btn btn-primary btn-large">Ver Productos</a>
+        <a href="contacto.html" class="btn btn-outline btn-large">Contactar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DESCRIPCIÓN ===== -->
+  <section class="emp-section emp-section--alt">
+    <div class="container">
+      <span class="section-tag" style="margin-bottom:14px;display:inline-block;">Quiénes somos</span>
+      <h2>Especialistas en LED programable</h2>
+      <p>Disponemos de una amplia variedad de pantallas LED <strong style="color:var(--white)">monocolor</strong> (un solo color a elegir entre nuestras 5 variedades: rojo, verde, blanco, ámbar o azul) y <strong style="color:var(--white)">RGB</strong> (una sola pantalla reproduce todos los colores).</p>
+      <p>Trabajamos con LEDs y componentes de alta calidad. Nuestra experiencia en el sector nos permite ofrecerle la <strong style="color:var(--white)">mejor relación calidad–precio del mercado</strong>.</p>
+      <p>Al ser fabricantes nos permite ofrecerle la pantalla que está buscando. Nuestra vocación de estar a la vanguardia del sector nos ha llevado a la especialización y al desarrollo de productos diferenciales.</p>
+    </div>
+  </section>
+
+  <!-- ===== LO QUE REPRODUCEN ===== -->
+  <section class="emp-section">
+    <div class="container">
+      <span class="section-tag" style="margin-bottom:14px;display:inline-block;">Capacidades</span>
+      <h2>Nuestras pantallas reproducen</h2>
+      <p>Puedes poner todos los mensajes que quieras, con efectos personalizables, elegir tamaño y tipo de letra, ajustar la velocidad y elegir entre muchísimos efectos de movimiento, mediante el software que te proporcionamos.</p>
+      <div class="emp-caps-grid">
+        <div class="emp-cap-card">
+          <div class="emp-cap-icon">💬</div>
+          <h3>Textos</h3>
+          <p>Textos estáticos o con movimiento, con múltiples efectos y velocidades personalizables.</p>
+        </div>
+        <div class="emp-cap-card">
+          <div class="emp-cap-icon">🕐</div>
+          <h3>Fecha y hora</h3>
+          <p>Muestra la fecha y hora en tiempo real en tu pantalla de forma automática.</p>
+        </div>
+        <div class="emp-cap-card">
+          <div class="emp-cap-icon">🎨</div>
+          <h3>Logos y diseños</h3>
+          <p>Algunos logos, diseños de cruces, marcos y otros elementos gráficos.</p>
+        </div>
+        <div class="emp-cap-card">
+          <div class="emp-cap-icon">🌡️</div>
+          <h3>Temperatura</h3>
+          <p>Como opcional puede añadirle el sensor de temperatura para mostrarla en pantalla.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROGRAMACIÓN ===== -->
+  <section class="emp-section emp-section--alt">
+    <div class="container">
+      <span class="section-tag" style="margin-bottom:14px;display:inline-block;">Programación</span>
+      <h2>Cómoda y fácil de programar</h2>
+      <p>Al usar un software de programación moderno e intuitivo, nos permite personalizar la pantalla a nuestro gusto. Haces el programa en el ordenador y tienes dos opciones para transmitir la información a la pantalla:</p>
+      <div class="emp-prog-grid">
+        <div class="emp-prog-card">
+          <div class="emp-prog-icon">🖥️</div>
+          <h3>Modo base — USB</h3>
+          <p>Haces el programa en el ordenador y lo exportas a la memoria USB. Después conectas esta al letrero. Si el letrero se encuentra a gran altura, tenemos la posibilidad de añadirle un cable macho–hembra para alargar la conexión.</p>
+        </div>
+        <div class="emp-prog-card emp-prog-card--highlight">
+          <div class="emp-prog-icon">📶</div>
+          <h3>Modo opcional — WiFi</h3>
+          <p>Haces el programa en tu ordenador y mandas el programa a distancia al letrero, que lleva una antena WiFi incorporada. Al elegir esta opción también es posible programar su pantalla a través de su <strong style="color:var(--white)">teléfono inteligente</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CARACTERÍSTICAS ===== -->
+  <section class="emp-section">
+    <div class="container">
+      <span class="section-tag" style="margin-bottom:14px;display:inline-block;">Características</span>
+      <h2>Características principales</h2>
+      <div class="emp-features-grid">
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Para exterior e interior (con protección para exterior)</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Modelos de una cara y a doble cara (banderolas publicitarias)</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Fecha, hora, cualquier texto e información personalizada</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Programación mediante USB con ordenador PC (sin necesidad de tenerla conectada)</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Opcional: programación a distancia WiFi para ordenador y teléfono</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Fácil de programar</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Alta definición y luminosidad</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Baja emisión de calor</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Resistente a impactos y vibraciones</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Fácil instalación</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Vida útil aproximada de 100.000 horas</span>
+        </div>
+        <div class="emp-feature-item">
+          <div class="emp-feature-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Temperatura opcional como complemento</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="emp-cta">
+    <div class="container">
+      <h2>¿Listo para dar visibilidad a tu negocio?</h2>
+      <p>Somos especialistas en el diseño, fabricación y comercialización de letreros LED programables. Cuéntanos lo que necesitas.</p>
+      <div class="emp-cta-btns">
+        <a href="produtos.html" class="btn btn-primary btn-large">Ver Productos</a>
+        <a href="contacto.html" class="btn btn-outline btn-large">Pedir Presupuesto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contacto">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="nav-logo footer-logo">
+              <div class="logo-svg">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10" stroke="var(--text-muted)"/>
+                  <ellipse cx="12" cy="12" rx="4" ry="10" stroke="var(--primary)"/>
+                  <line x1="2" y1="12" x2="22" y2="12" stroke="var(--primary)"/>
+                  <line x1="4" y1="7" x2="20" y2="7" stroke="var(--text-muted)"/>
+                  <line x1="4" y1="17" x2="20" y2="17" stroke="var(--text-muted)"/>
+                </svg>
+              </div>
+              <div class="logo-stack">
+                <span>LEDS</span>
+                <span>PARATODOS</span>
+                <span>.COM</span>
+              </div>
+            </a>
+            <p>Especialistas en letreros LED programables. Calidad, soporte y entrega rápida.</p>
+            <div class="social-links">
+              <a href="https://www.facebook.com/letrerosledprogramables" class="social-link social-link--facebook" aria-label="Facebook" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@ledparatodos" class="social-link social-link--youtube" aria-label="YouTube" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/ledparatodos_?igsh=MWl3ZzZsaWMyeGdidg==" class="social-link social-link--instagram" aria-label="Instagram" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="https://wa.me/34652027910" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Nosotros</h4>
+            <ul>
+              <li><a href="empresa.html">Empresa</a></li>
+              <li><a href="zona-profesionales.html">Zona Profesionales</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="formas-de-pago.html">Formas de Pago</a></li>
+              <li><a href="terminos-devoluciones.html">Términos y Devoluciones</a></li>
+              <li><a href="aviso-legal.html">Aviso Legal</a></li>
+              <li><a href="privacidad.html">Política de Privacidad</a></li>
+              <li><a href="cookies.html">Política de Cookies</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Letreros Programables. Todos los derechos reservados.</p>
+        <div class="footer-legal">
+          <a href="privacidad.html">Política de Privacidad</a>
+          <a href="#">Términos y Condiciones</a>
+          <a href="cookies.html">Política de Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/34652027910" class="whatsapp-float" aria-label="Contactar por WhatsApp" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script src="main.js"></script>
+</body>
+</html>
