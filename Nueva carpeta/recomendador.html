@@ -1155,6 +1155,7 @@
 
     // ── Show result ──
     function showResult() {
+      history.pushState({ configurador: 'result' }, '');
       sessionStorage.setItem('recomendador_state', JSON.stringify(state));
       configNav.style.display      = 'none';
       configProgress.style.display = 'none';
@@ -1168,11 +1169,17 @@
         <div class="result-spec"><div class="result-spec-label">Tamaño</div><div class="result-spec-val">${state.ancho} × ${state.alto} cm</div></div>
       `;
 
-      const matched = configProducts.filter(p =>
-        p.color === state.color &&
-        p.pitches.includes(state.pitch) &&
-        (!state.ubicacion || p.ubicacion.includes(state.ubicacion))
-      );
+      const sizeStr = `${state.ancho} cm de ancho x ${state.alto} cm de alto`;
+      const matched = configProducts.filter(p => {
+        if (p.color !== state.color) return false;
+        if (!p.pitches.includes(state.pitch)) return false;
+        if (state.ubicacion && !p.ubicacion.includes(state.ubicacion)) return false;
+        const prodData = window.PRODUCTS_DATA && window.PRODUCTS_DATA.find(d => d.id === p.id);
+        if (!prodData) return true;
+        const tamano = prodData.options && prodData.options.find(o => o.id === 'tamano');
+        if (!tamano) return true;
+        return tamano.choices.includes(sizeStr);
+      });
       const listEl = document.getElementById('resultProductList');
       if (matched.length === 0) {
         listEl.innerHTML = `<div class="no-match-box"><strong>No encontramos un match exacto</strong><p>Te recomendamos visitar el catálogo completo o contáctanos por WhatsApp.</p></div>`;
@@ -1211,6 +1218,17 @@
       stepLabel.style.display      = 'block';
       showStep(1);
       window.scrollTo({ top: document.querySelector('.config-box').offsetTop - 120, behavior:'smooth' });
+    });
+
+    // ── Browser back from result → step 4 ──
+    window.addEventListener('popstate', function() {
+      if (resultBox.style.display !== 'none') {
+        resultBox.style.display = 'none';
+        configNav.style.display = 'flex';
+        configProgress.style.display = 'flex';
+        stepLabel.style.display = 'block';
+        showStep(4);
+      }
     });
 
     // ── Init ──
