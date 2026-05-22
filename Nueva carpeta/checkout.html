@@ -584,17 +584,17 @@
                 <input type="radio" name="envio" value="gratis" checked onchange="selectShipping(this)">
                 <div class="shipping-option-info">
                   <div class="shipping-option-name">Envío estándar</div>
-                  <div class="shipping-option-desc">3–5 días laborables · España peninsular</div>
+                  <div class="shipping-option-desc">Recibirá un correo cuando el pedido esté preparado para enviar</div>
                 </div>
                 <div class="shipping-option-price">Gratis</div>
               </label>
-              <label class="shipping-option" id="ship-express">
-                <input type="radio" name="envio" value="express" onchange="selectShipping(this)">
+              <label class="shipping-option selected" id="ship-contrarembolso" style="display:none">
+                <input type="radio" name="envio" value="contrarembolso" checked onchange="selectShipping(this)">
                 <div class="shipping-option-info">
-                  <div class="shipping-option-name">Envío express</div>
-                  <div class="shipping-option-desc">1–2 días laborables · España peninsular</div>
+                  <div class="shipping-option-name">Envío gran formato</div>
+                  <div class="shipping-option-desc">Artículo de gran formato · Nos pondremos en contacto para coordinar el envío</div>
                 </div>
-                <div class="shipping-option-price">9,99 €</div>
+                <div class="shipping-option-price" style="color:var(--text-muted);font-size:0.85rem">A consultar</div>
               </label>
               <div class="step-actions">
                 <button class="btn btn-primary" onclick="continueStep(3)">Continuar</button>
@@ -772,7 +772,7 @@
       } else {
         discLine.style.display = 'none';
       }
-      document.getElementById('summaryEnvio').textContent = state.shippingCost === 0 ? 'Gratis' : formatPrice(state.shippingCost);
+      document.getElementById('summaryEnvio').textContent = state.shippingCost > 0 ? formatPrice(state.shippingCost) : (cartHasLargeItem() ? 'A consultar' : 'Gratis');
       document.getElementById('summaryTotal').textContent = formatPrice(total);
       const pagarEl = document.getElementById('pagarTotal');
       if (pagarEl) pagarEl.textContent = formatPrice(total);
@@ -842,7 +842,9 @@
         unlockAndOpen(3);
       } else if (n === 3) {
         const selected = document.querySelector('input[name="envio"]:checked');
-        const label = selected?.value === 'express' ? 'Express (9,99 €)' : 'Estándar (Gratis)';
+        let label;
+        if (selected?.value === 'contrarembolso') label = 'Gran formato (A consultar)';
+        else label = 'Estándar (Gratis)';
         document.getElementById('step3Summary').textContent = label;
         markDone(3);
         unlockAndOpen(4);
@@ -853,6 +855,7 @@
       const b = document.getElementById(`step${n}`);
       b.classList.remove('locked');
       openStep(n);
+      if (n === 3) applyShippingForCart();
     }
 
     // ── Shipping ───────────────────────────────────────────────────
@@ -861,6 +864,35 @@
       radio.closest('.shipping-option').classList.add('selected');
       state.shippingCost = radio.value === 'express' ? 9.99 : 0;
       updateTotals();
+    }
+
+    function cartHasLargeItem() {
+      const cart = getCart();
+      for (const item of cart) {
+        let totalCm = 0;
+        for (const opt of (item.options || [])) {
+          const matches = (opt.value || '').match(/(\d+(?:[.,]\d+)?)\s*cm/gi) || [];
+          for (const m of matches) {
+            totalCm += parseFloat(m.replace(',', '.'));
+          }
+        }
+        if (totalCm >= 290) return true;
+      }
+      return false;
+    }
+
+    function applyShippingForCart() {
+      const large = cartHasLargeItem();
+      document.getElementById('ship-gratis').style.display = large ? 'none' : '';
+      document.getElementById('ship-contrarembolso').style.display = large ? '' : 'none';
+      if (large) {
+        const radio = document.querySelector('input[name="envio"][value="contrarembolso"]');
+        radio.checked = true;
+        document.querySelectorAll('.shipping-option').forEach(el => el.classList.remove('selected'));
+        radio.closest('.shipping-option').classList.add('selected');
+        state.shippingCost = 0;
+        updateTotals();
+      }
     }
 
     // ── Promo code ─────────────────────────────────────────────────
